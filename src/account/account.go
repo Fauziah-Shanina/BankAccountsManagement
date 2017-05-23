@@ -20,12 +20,18 @@ func OpenAccount(initialAmount int64) (openedAcc *Account) {
 
 func (acc *Account) CloseAccount() (payout int64, ok bool) {
 
-    payout = acc.Amount
-	
-	acc.Withdraw(acc.Amount)
-	acc.Activated = false
-    
-    ok = true
+	if acc.Activated {
+		payout = acc.Amount
+        fmt.Printf("The payout value is %v \n" ,payout)
+		acc.Withdraw(acc.Amount)
+		acc.Activated = false
+		fmt.Println("The account has closed")
+		ok = true
+		return
+	}
+	ok = false
+
+	fmt.Println("The account is already closed")
 	return
 
 }
@@ -69,8 +75,13 @@ func (acc *Account) Deposit(amountToDeposit int64) (ok bool) {
 	return
 }
 
-func PrintAccount (acc Account){
-	
-	fmt.Printf("Balance is %v \n" , acc.Amount)
-	fmt.Printf("Account closed is %v \n" , !acc.Activated)
+func PrintAccount(acc Account) {
+
+	fmt.Printf("Balance is %v \n", acc.Amount)
+	if acc.Activated {
+		fmt.Println("Account is activated ")
+	} else {
+		fmt.Println("Account is closed")
+	}
+	fmt.Println("-----------------------------------------")
 }
